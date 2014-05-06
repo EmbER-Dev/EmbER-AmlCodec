@@ -1,9 +1,9 @@
-PREFIX=$(AML_LIBS_STAGING_DIR)/usr
-
+ROOTFS?=$(PREFIX)
 LIB_DIR?=$(PREFIX)/lib
-HEADERS_DIR?=$(PREFIX)/include
+HEADERS_DIR?=$(INC_DIR)/include
 CROSS=$(CC:%gcc=%)
 QUITE_CMD=1
+
 
 INSTALL_FLAGS=-m 755
 
@@ -21,11 +21,14 @@ SRC?=$(TOPDIR)
 SRCTREE=$(SRC)
 BUILDTREE=$(SRC)/out
 
-INSTALL_DIR=${LIB_DIR}/aml_libs
+INSTALL_DIR=${LIB_DIR}/libplayer
 
 TARGET?=libamcodec.so
 
 DIRS=audio_ctl/ codec/
+
+LIB_VERSION=
+LIB_SUB_VERSION=.0.0
 
 LDFLAGS=  -O2  -L$(LIB_DIR)  -lm -lc  -shared -Wl,--shared -Wl,-soname,$(TARGET)$(LIB_VERSION)
 
@@ -33,11 +36,17 @@ LDFLAGS=  -O2  -L$(LIB_DIR)  -lm -lc  -shared -Wl,--shared -Wl,-soname,$(TARGET)
 INCLUDE=${SRCTREE}/include/ 
 #CFLAGS=-O0  -gdwarf-2  -g
 CFLAGS=-O2 -g  -I$(SRC)/include  -I${SRCTREE}/audio_ctl -I${SRCTREE}/codec -I${SRCTREE}/../amadec/include -fPIC
+CFLAGS+=-mfpu=neon -mtune=cortex-a9 -march=armv7-a
 
+FLOAT=softfp
 
+ifdef BR2_ARM_EABIHF
+FLOAT = hard
+endif
 
+CFLAGS+=-mfloat-abi=$(FLOAT)
 
-target_all=  $(TARGET)
+target_all=  $(TARGET)$(LIB_VERSION)$(LIB_SUB_VERSION)
 all:$(target_all)
 
 dirs=$(DIRS)
@@ -59,7 +68,9 @@ clean:$(CLRDIR)
 	rm -rf $(target_all)
 
 install:$(target_all)
-	-install  -m 755   $(TARGET)  $(INSTALL_DIR)
-	cp  -rf $(SRC)/include/*  $(HEADERS_DIR)/
-    
+	install  $(INSTALL_FLAGS)	$(TARGET)$(LIB_VERSION)$(LIB_SUB_VERSION)  $(LIB_DIR)
+	cp	-rf $(SRC)/include/*  $(HEADERS_DIR)/
+	-rm  $(LIB_DIR)/$(TARGET)
+	-ln -s $(TARGET)$(LIB_VERSION)$(LIB_SUB_VERSION)  $(LIB_DIR)/$(TARGET)$(LIB_VERSION)
+
 
