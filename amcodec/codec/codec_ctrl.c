@@ -284,7 +284,6 @@ static inline int codec_video_es_init(codec_para_t *pcodec)
     else {
       handle = codec_h_open(CODEC_VIDEO_ES_DEVICE, flags);
     }
-    
     if (handle < 0) {
         codec_r = system_error_to_codec_error(handle);
         print_error_msg(codec_r, errno, __FUNCTION__, __LINE__);
