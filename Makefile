@@ -1,24 +1,15 @@
-#CC=${HOST_GCC}
+CC=${HOST_GCC}
+export CC
 
-#export CC BUILD_DIR STAGING_DIR TARGET_DIR
 all:
-	mkdir -p $(shell pwd)/../../staging/usr/lib/libplayer
-	-$(MAKE) -C amffmpeg all
-	-$(MAKE) -C amffmpeg install
-	-$(MAKE) -C amplayer all
-	-$(MAKE) -C amplayer install
-	-$(MAKE) -C streamsource all
-	-$(MAKE) -C streamsource install
-	-$(MAKE) -C examples all
-	-$(MAKE) -C third_parts/libcurl-ffmpeg all
-	-$(MAKE) -C third_parts/libdash all
+	-make -C amadec install
+	-make -C amavutils install
+	-make -C amcodec install
     
 install:
-	-$(MAKE) -C examples install
+	all
 
 clean:
-	-$(MAKE) -C amffmpeg clean
-	-$(MAKE) -C streamsource clean
-	-$(MAKE) -C examples clean
-	-$(MAKE) -C third_parts clean
-
+	-make -C amadec clean
+	-make -C amavutils clean
+	-make -C amcodec clean
