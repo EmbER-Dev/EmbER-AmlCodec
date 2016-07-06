@@ -94,8 +94,8 @@ typedef enum _OSD_DISP_MODE {
 
 OSD_DISP_MODE get_osd_display_mode()
 {
-    OSD_DISP_MODE ret = OSD_DISP_1080P; 
-    char buf[32]; 
+    OSD_DISP_MODE ret = OSD_DISP_1080P;
+    char buf[32];
     memset(buf,0,sizeof(buf));
     amsysfs_get_sysfs_str("/sys/class/display/mode", buf, 32);
     if(!strncmp(buf,"720p",4)){
@@ -119,7 +119,7 @@ OSD_DISP_MODE get_osd_display_mode()
     else if(!strncmp(buf,"1080p",5)){
         ret = OSD_DISP_1080P;
     }
-    else if(!strncmp(buf,"lvds1080p",9)){			
+    else if(!strncmp(buf,"lvds1080p",9)){
         ret = OSD_DISP_LVDS1080P;
     }
     return ret;
@@ -135,7 +135,7 @@ int get_device_win(OSD_DISP_MODE dismod, int *x, int *y, int *w, int *h)
     memset(prop_value_x,0,32);
     char prop_value_y[32];
     memset(prop_value_y,0,32);
-	
+
     switch(dismod)
     {
     case OSD_DISP_1080P:
@@ -277,7 +277,7 @@ int amvideo_utils_set_virtual_position(int32_t x, int32_t y, int32_t w, int32_t 
 	int osd_rotation = amdisplay_utils_get_osd_rotation();
 	if(osd_rotation > 0)
         amvideo_convert_axis(&x,&y,&w,&h,&rotation,osd_rotation);
-	
+
     int video_fd;
     int dev_fd = -1, dev_w, dev_h, disp_w, disp_h, video_global_offset;
     int dst_x, dst_y, dst_w, dst_h;
@@ -289,13 +289,13 @@ int amvideo_utils_set_virtual_position(int32_t x, int32_t y, int32_t w, int32_t 
     int video_on_vpp2 = is_video_on_vpp2();
     int vertical_panel = is_vertical_panel();
     int vertical_panel_reverse = is_vertical_panel_reverse();
-    
+
     if (video_on_vpp2) {
         int fb0_w, fb0_h, fb2_w, fb2_h;
-        
+
         amdisplay_utils_get_size(&fb0_w, &fb0_h);
         amdisplay_utils_get_size_fb2(&fb2_w, &fb2_h);
-        
+
         if (fb0_w > 0 && fb0_h > 0 && fb2_w > 0 && fb2_h > 0) {
             if (vertical_panel) {
                 int x1, y1, w1, h1;
@@ -308,7 +308,7 @@ int amvideo_utils_set_virtual_position(int32_t x, int32_t y, int32_t w, int32_t 
                     x1 = (1.0 * fb2_w / fb0_h) * y;
                     y1 = (1.0 * fb2_h / fb0_w) * (fb0_w - x - w);
                     w1 = (1.0 * fb2_w / fb0_h) * h;
-                    h1 = (1.0 * fb2_h / fb0_w) * w;                
+                    h1 = (1.0 * fb2_h / fb0_w) * w;
                 }
                 x = x1;
                 y = y1;
@@ -319,13 +319,13 @@ int amvideo_utils_set_virtual_position(int32_t x, int32_t y, int32_t w, int32_t 
                 x1 = (1.0 * fb2_w / fb0_w) * x;
                 y1 = (1.0 * fb2_h / fb0_h) * y;
                 w1 = (1.0 * fb2_w / fb0_w) * w;
-                h1 = (1.0 * fb2_h / fb0_h) * h;            
+                h1 = (1.0 * fb2_h / fb0_h) * h;
                 x = x1;
                 y = y1;
                 w = w1;
-                h = h1;        
+                h = h1;
             }
-        }        
+        }
     }
     LOGI("amvideo_utils_set_virtual_position:: x=%d y=%d w=%d h=%d\n", x, y, w, h);
 
@@ -359,15 +359,15 @@ int amvideo_utils_set_virtual_position(int32_t x, int32_t y, int32_t w, int32_t 
         amdisplay_utils_get_size_fb2(&disp_w, &disp_h);
     else
         amdisplay_utils_get_size(&disp_w, &disp_h);
-    
-    LOGI("amvideo_utils_set_virtual_position:: disp_w=%d, disp_h=%d\n", disp_w, disp_h);    
-        
+
+    LOGI("amvideo_utils_set_virtual_position:: disp_w=%d, disp_h=%d\n", disp_w, disp_h);
+
     video_global_offset = amvideo_utils_get_global_offset();
-   
+
     int free_scale_enable = 0;
     int ppscaler_enable = 0;
     int freescale_mode_enable = 0;
-    
+
     if (((disp_w != dev_w) || (disp_h / 2 != dev_h)) &&
         (video_global_offset == 0)) {
         char val[256];
@@ -382,12 +382,12 @@ int amvideo_utils_set_virtual_position(int32_t x, int32_t y, int32_t w, int32_t 
             if (amsysfs_get_sysfs_str(FREE_SCALE_PATH, val, sizeof(val)) == 0) {
                 /* the returned string should be "free_scale_enable:[0x%x]" */
                 free_scale_enable = (val[21] == '0') ? 0 : 1;
-            }            
+            }
         }
 
         memset(val, 0, sizeof(val));
         if (amsysfs_get_sysfs_str(PPSCALER_PATH, val, sizeof(val)) == 0) {
-            /* the returned string should be "current ppscaler mode is disabled/enable" */            
+            /* the returned string should be "current ppscaler mode is disabled/enable" */
             ppscaler_enable = (val[25] == 'd') ? 0 : 1;
         }
 
@@ -431,11 +431,11 @@ int amvideo_utils_set_virtual_position(int32_t x, int32_t y, int32_t w, int32_t 
     }
 #endif
     /*if (free_scale_enable == 0 && ppscaler_enable == 0) {
-            
+
         OSD_DISP_MODE display_mode = OSD_DISP_1080P;
         int x_d=0,y_d=0,w_d=0,h_d=0;
         LOGI("set screen position:x[%d],y[%d],w[%d],h[%d]", dst_x, dst_y, dst_w, dst_h);
-    
+
         display_mode = get_osd_display_mode();
         get_device_win(display_mode, &x_d, &y_d, &w_d, &h_d);
         if(display_mode==OSD_DISP_720P) {
@@ -583,7 +583,7 @@ int amvideo_utils_set_virtual_position(int32_t x, int32_t y, int32_t w, int32_t 
     axis[1] = dst_y;
     axis[2] = dst_x + dst_w - 1;
     axis[3] = dst_y + dst_h - 1;
-    
+
     ioctl(video_fd, AMSTREAM_IOC_SET_VIDEO_AXIS, &axis[0]);
 
     ret = 0;
@@ -591,11 +591,11 @@ OUT:
     if (video_fd >= 0) {
         close(video_fd);
     }
-    
+
     if (dev_fd >= 0) {
         close(dev_fd);
     }
-    
+
     if (angle_fd >= 0) {
         close(angle_fd);
     }
@@ -612,7 +612,7 @@ int amvideo_utils_set_absolute_position(int32_t x, int32_t y, int32_t w, int32_t
     int axis[4];
     int video_on_vpp2 = is_video_on_vpp2();
     int vertical_panel = is_vertical_panel();
-    
+
     LOGI("amvideo_utils_set_absolute_position:: x=%d y=%d w=%d h=%d\n", x, y, w, h);
 
     video_fd = open(VIDEO_PATH, O_RDWR);
@@ -634,7 +634,7 @@ int amvideo_utils_set_absolute_position(int32_t x, int32_t y, int32_t w, int32_t
     axis[1] = y;
     axis[2] = x + w - 1;
     axis[3] = y + h - 1;
-    
+
     ioctl(video_fd, AMSTREAM_IOC_SET_VIDEO_AXIS, &axis[0]);
 
     close(video_fd);
@@ -708,14 +708,14 @@ int amvideo_utils_get_video_angle(int *angle)
     LOG_FUNCTION_NAME
     int angle_fd;
     int angle_value = 0;
-    
+
     angle_fd = open(ANGLE_PATH, O_RDONLY);
     if (angle_fd >= 0) {
         ioctl(angle_fd, PPMGR_IOC_GET_ANGLE, &angle_value);
         //LOGI("get ppmgr angle %d\n", angle_value);
         close(angle_fd);
     }
-    
+
     *angle = angle_value;
 
     return 0;
@@ -723,7 +723,7 @@ int amvideo_utils_get_video_angle(int *angle)
 
 int amvideo_utils_get_hdmi_authenticate(void)
 {
-    LOG_FUNCTION_NAME    
+    LOG_FUNCTION_NAME
     int fd = -1;
     int val = -1;
     char  bcmd[16];
@@ -733,5 +733,5 @@ int amvideo_utils_get_hdmi_authenticate(void)
         val = strtol(bcmd, NULL, 10);
         close(fd);
     }
-    return val;   
+    return val;
 }

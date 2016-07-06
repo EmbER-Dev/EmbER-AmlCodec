@@ -27,17 +27,17 @@ TARGET?=libamcodec.so
 
 DIRS=audio_ctl/ codec/
 
-LDFLAGS=  -O2  -L$(LIB_DIR)  -lm -lc  -shared -Wl,--shared -Wl,-soname,$(TARGET)$(LIB_VERSION)
+LDFLAGS= -O2 -L$(LIB_DIR) -lm -lc -shared -Wl,--shared -Wl,-soname,$(TARGET)$(LIB_VERSION)
 
 #INCLUDE=$(DIRS:%/=-I$(SRC)/%/include)
 INCLUDE=${SRCTREE}/include/ 
-#CFLAGS=-O0  -gdwarf-2  -g
-CFLAGS=-O2 -g  -I$(SRC)/include  -I${SRCTREE}/audio_ctl -I${SRCTREE}/codec -I${SRCTREE}/../amadec/include -fPIC
+#CFLAGS=-O0 -gdwarf-2 -g
+CFLAGS=-O2 -g -I$(SRC)/include -I${SRCTREE}/audio_ctl -I${SRCTREE}/codec -I${SRCTREE}/../amadec/include -fPIC
 
 
 
 
-target_all=  $(TARGET)
+target_all= $(TARGET)
 all:$(target_all)
 
 dirs=$(DIRS)
@@ -52,14 +52,14 @@ $(target_all):$(DIROBJ)
 
 
 include $(SRCTREE)/rules.mk
-export CC CPP AS AR LD TOPDIR SRCTREE  CFLAGS LDFLAGS Q
+export CC CPP AS AR LD TOPDIR SRCTREE CFLAGS LDFLAGS Q
 
 CLRDIR=$(dirs:%/=%-clrdir)
 clean:$(CLRDIR)
 	rm -rf $(target_all)
 
 install:$(target_all)
-	-install  -m 755   $(TARGET)  $(INSTALL_DIR)
-	cp  -rf $(SRC)/include/*  $(HEADERS_DIR)/
-    
+	-install -m 755 $(TARGET) $(INSTALL_DIR)
+	cp -rf $(SRC)/include/* $(HEADERS_DIR)/
+
 
