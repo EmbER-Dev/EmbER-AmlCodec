@@ -1,7 +1,7 @@
 PREFIX=$(AML_LIBS_STAGING_DIR)/usr
 
 LIB_DIR?=$(PREFIX)/lib
-HEADERS_DIR?=$(PREFIX)/include
+HEADERS_DIR?=$(PREFIX)/include/amcodec
 CROSS=$(CC:%gcc=%)
 QUITE_CMD=1
 
@@ -60,6 +60,7 @@ clean:$(CLRDIR)
 
 install:$(target_all)
 	-install -m 755 $(TARGET) $(INSTALL_DIR)
+	mkdir -p $(HEADERS_DIR)
 	cp -rf $(SRC)/include/* $(HEADERS_DIR)/
 
 

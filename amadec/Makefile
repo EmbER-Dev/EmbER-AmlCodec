@@ -1,7 +1,7 @@
 M_PREFIX=$(AML_LIBS_STAGING_DIR)/usr
 
 LIB_DIR?=$(M_PREFIX)/lib
-HEADERS_DIR?=$(M_PREFIX)/include
+HEADERS_DIR?=$(M_PREFIX)/include/amadec
 
 TARGET_OBJS=adec-external-ctrl.o adec-internal-mgt.o adec-ffmpeg-mgt.o adec-message.o adec-pts-mgt.o feeder.o adec_write.o adec_read.o\
            dsp/audiodsp-ctl.o audio_out/alsa-out.o audio_out/aml_resample.o audiodsp_update_format.o spdif_api.o pcmenc_api.o dts_transenc_api.o dts_enc.o audio_out/alsactl_parser.o \
@@ -35,6 +35,7 @@ $(TARGET): $(TARGET_OBJS)
 
 install:
 	-install -m 555 ${TARGET} $(INSTALL_DIR)
+	mkdir -p $(HEADERS_DIR)
 	cp  -rf $(SRC)/include/*  $(HEADERS_DIR)/
 	cp  -rf $(SRC)/*.h  $(HEADERS_DIR)/
 

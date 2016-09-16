@@ -1,6 +1,6 @@
 M_PREFIX=$(AML_LIBS_STAGING_DIR)/usr
 LIB_DIR?=$(M_PREFIX)/lib
-HEADERS_DIR?=$(M_PREFIX)/include
+HEADERS_DIR?=$(M_PREFIX)/include/amavutils
 
 TARGET_OBJS=amaudioutils.o amconfigutils.o amdisplayutils.o ammodule.o amsysfsutils.o Amvideoutils.o itemlist.o\
 
@@ -32,6 +32,7 @@ $(TARGET): $(TARGET_OBJS)
 
 install:
 	-install -m 555 ${TARGET} $(INSTALL_DIR)
+	mkdir -p $(HEADERS_DIR)
 	cp  -rf $(SRC)/include/*  $(HEADERS_DIR)/
 
 force:
