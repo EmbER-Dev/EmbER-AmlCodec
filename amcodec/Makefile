@@ -5,7 +5,7 @@ HEADERS_DIR?=$(PREFIX)/include/amcodec
 CROSS=$(CC:%gcc=%)
 QUITE_CMD=1
 
-INSTALL_FLAGS=-m 755
+INSTALL_FLAGS=-m 644
 
 CPP=$(CROSS)g++
 AS=$(CROSS)as

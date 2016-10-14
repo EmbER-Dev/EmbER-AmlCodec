@@ -73,7 +73,7 @@ $(OUTPUT):$(OBJS)
 -include $(DEPENDS)
 
 install:
-	-install -m 555 ${OUTPUT} $(INSTALL_DIR)
+	-install -m 644 ${OUTPUT} $(INSTALL_DIR)
 
 rebuild:clean all
 

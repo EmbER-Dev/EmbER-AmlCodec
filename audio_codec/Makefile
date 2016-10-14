@@ -15,6 +15,7 @@ install:
 	-make -C libamr install
 	-make -C libape install
 	-make -C libcook install
+	-make -C libeac3 install
 	-make -C libfaad install
 	-make -C libflac install
 	-make -C liblpcm install

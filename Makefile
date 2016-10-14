@@ -18,9 +18,8 @@ install:
 	cp -rf $(AML_LIBS_STAGING_DIR)/usr/lib/aml_libs/*.so $(AML_LIBS_TARGET_DIR)/usr/lib
 	cp -rf $(AML_LIBS_STAGING_DIR)/usr/lib/aml_libs/*.so $(AML_LIBS_STAGING_DIR)/usr/lib/libplayer
 	mkdir -p $(AML_LIBS_TARGET_DIR)/lib/firmware/amlogic/amadec
-	install -m 0644 amadec/$(FW)/*.bin $(AML_LIBS_TARGET_DIR)/lib/firmware/amlogic/amadec
+	install -m 644 amadec/$(FW)/*.bin $(AML_LIBS_TARGET_DIR)/lib/firmware/amlogic/amadec
 	cd $(AML_LIBS_TARGET_DIR)/lib/firmware; ln -sf amlogic/amadec/* .; cd $(AML_LIBS_BUILD_DIR)
-	cp -rf audio_codec/libeac3/libeac3.so $(AML_LIBS_TARGET_DIR)/usr/lib
 
 clean:
 	-$(MAKE) -C amadec clean

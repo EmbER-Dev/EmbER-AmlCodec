@@ -34,7 +34,7 @@ $(TARGET): $(TARGET_OBJS)
 
 
 install:
-	-install -m 555 ${TARGET} $(INSTALL_DIR)
+	-install -m 644 ${TARGET} $(INSTALL_DIR)
 	mkdir -p $(HEADERS_DIR)
 	cp  -rf $(SRC)/include/*  $(HEADERS_DIR)/
 	cp  -rf $(SRC)/*.h  $(HEADERS_DIR)/
